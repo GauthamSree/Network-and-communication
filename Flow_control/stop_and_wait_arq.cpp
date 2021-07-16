@@ -28,10 +28,10 @@ frame DATA;
 frame ACKNO;
 static int ackno = 0;
 
-typedef enum{RequestToSend, Frame_Arrival, Acknowledgement_Arrival, N_Ack, Timeout} event_type;
+typedef enum {RequestToSend, Frame_Arrival, Acknowledgement_Arrival, N_Ack, Timeout} event_type;
 
-static int i = 1;         //Data to be sent by sender
-int DISCONNECT=0;
+static int i = 1;         // Data to be sent by sender
+int DISCONNECT = 0;
 static int timer = 0;
 static int cor = 0;
 static int revTimeout = 0;
@@ -81,15 +81,6 @@ void from_physical_layer(frame *buffer) {
   *buffer = DATA;
 }
 
-void to_network_layer1(packet *buffer) {
-  cout << "RECIEVER : Packet " << (*buffer).data << " recieved , Ack Sent\n";
-  if (i > TOT_PACKETS) //if all packets recieved then disconnect
-  {
-    DISCONNECT = 1;
-    cout << "\nDISCONNECTED\n";
-  }
-}
-
 void SendACK() {
   ackno = 1 - ackno;
   ACKNO.ack = ackno; 
@@ -129,7 +120,7 @@ void sender() {
       cout << "\nDISCONNECTED\n";
       break;
     }
-    if(Event(RequestToSend) && canSend) {
+    if (Event(RequestToSend) && canSend) {
       from_network_layer(&buffer);
       Make_Frame(Sn, &buffer, &s);
       to_physical_layer(&s);
@@ -147,7 +138,7 @@ void sender() {
     }
     ack:
     WaitForEvent1(1);
-    if(Event(Acknowledgement_Arrival)) {
+    if (Event(Acknowledgement_Arrival)) {
       int no;
       recieveACK(&no);
       if (ACKNO.ack == no) {
@@ -156,7 +147,7 @@ void sender() {
         event = RequestToSend;
       } 
     }
-    if(Event(Timeout) || Event(N_Ack)) {
+    if (Event(Timeout) || Event(N_Ack)) {
       if (Event(N_Ack)) {
         cout << "SENDER : N_ACK recieved \n";
       } 
