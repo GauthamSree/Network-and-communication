@@ -18,7 +18,7 @@
     2. To find class of IPv4 address 
     3. To find first and last address of IPv4 subnetting using given IPv4 address and subnet mask 
  
-## **Compilation and Execusion**
+## **Compilation and Execution**
 For C++ Code:
 ```
 g++ pathtocode.cpp; ./a.out
